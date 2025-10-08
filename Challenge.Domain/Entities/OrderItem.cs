@@ -19,6 +19,11 @@ public class OrderItem : BaseEntity
         orderItem.SetQuantity(model.Quantity);
         orderItem.SetIndividualAmount(model.IndividualAmount);
 
+        orderItem.SetCreatedBy(model.UpdateUserId);
+        orderItem.SetCreated(DateTime.UtcNow);
+        orderItem.SetUpdatedBy(model.UpdateUserId);
+        orderItem.SetUpdated(DateTime.UtcNow);
+
         return orderItem;
     }
 
@@ -46,7 +51,7 @@ public class OrderItem : BaseEntity
         Quantity = quantity;
     }
 
-    private void SetIndividualAmount(decimal individualAmount)
+    public void SetIndividualAmount(decimal individualAmount)
     {
         if (individualAmount <= 0.0m)
             throw new ArgumentException("IndividualAmount must be greater than zero.", nameof(individualAmount));
@@ -58,6 +63,7 @@ public class OrderItem : BaseEntity
         long OrderId,
         long ProductId,
         int Quantity,
-        decimal IndividualAmount
+        decimal IndividualAmount,
+        long UpdateUserId
     );
 }

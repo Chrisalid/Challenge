@@ -18,6 +18,8 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
         builder.Property(c => c.Email).HasColumnName("Email").IsRequired();
         builder.Property(c => c.Phone).HasColumnName("Phone").IsRequired();
 
+        builder.HasIndex(c => c.Email).IsUnique();
+
         builder.HasOne(c => c.User).WithOne(u => u.Client)
             .HasForeignKey<Client>(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
 

@@ -13,10 +13,20 @@ public static class EntityConfigurationExtension
             .HasColumnType("timestamp(6)")
             .IsRequired();
 
-        builder.Property("UpdatedAt")
-                .HasColumnName("CreatedAt")
-                .HasColumnType("timestamp(6)")
-                .HasDefaultValue(null);
+        builder.Property("CreatedBy")
+            .HasColumnName("CreatedBy")
+            .HasColumnType("bigint")
+            .IsRequired();
+
+    builder.Property("UpdatedAt")
+        .HasColumnName("UpdatedAt")
+        .HasColumnType("timestamp(6)")
+        .HasDefaultValue(null);
+
+        builder.Property("UpdatedBy")
+            .HasColumnName("UpdatedBy")
+            .HasColumnType("bigint")
+            .IsRequired();
 
         builder.Property("DeletedAt")
                 .HasColumnName("DeletedAt")

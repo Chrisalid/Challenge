@@ -9,8 +9,9 @@ public interface IUnitOfWorkRepository
     IOrderRepository Orders { get; }
     IOrderItemRepository OrderItems { get; }
     IUserRepository Users { get; }
+    IAuthTokenRepository AuthTokens { get; }
 
-    Task BeginTransactionAsync();
-    Task CommitTransactionAsync();
-    Task RollbackTransactionAsync();
+    Task Begin();
+    Task Commit();
+    Task Rollback();
 }

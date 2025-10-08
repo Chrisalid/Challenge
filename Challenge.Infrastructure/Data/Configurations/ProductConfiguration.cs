@@ -16,6 +16,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Name).HasColumnName("Name").IsRequired();
         builder.Property(p => p.Description).HasColumnName("Description").IsRequired();
         builder.Property(p => p.Value).HasColumnName("Value").HasColumnType("Numeric(15,2)").IsRequired();
+        builder.Property(p => p.Inventory).HasColumnName("Inventory").IsRequired();
 
         builder.SetPropertyCommums();
     }

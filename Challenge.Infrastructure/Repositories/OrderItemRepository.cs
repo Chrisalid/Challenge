@@ -5,12 +5,7 @@ using Challenge.Infrastructure.Repositories.Base;
 
 namespace Challenge.Infrastructure.Repositories;
 
-public class OrderItemRepository : BaseRepository<OrderItem>, IOrderItemRepository
+public class OrderItemRepository(ApplicationDbContext dbContext) : BaseRepository<OrderItem>(dbContext), IOrderItemRepository
 {
-    protected readonly ApplicationDbContext _dbContext;
-
-    public OrderItemRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    protected readonly ApplicationDbContext _dbContext = dbContext;
 }

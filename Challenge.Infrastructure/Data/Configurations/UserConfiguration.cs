@@ -16,7 +16,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Name).HasColumnName("Name").IsRequired();
         builder.Property(u => u.Email).HasColumnName("Email").IsRequired();
         builder.Property(u => u.Password).HasColumnName("Password").IsRequired();
+        builder.Property(u => u.IsActive).HasColumnName("IsActive").IsRequired();
         builder.Property(u => u.Role).HasColumnName("Role").IsRequired();
+
+        builder.HasIndex(u => u.Email).IsUnique();
 
         builder.SetPropertyCommums();
     }

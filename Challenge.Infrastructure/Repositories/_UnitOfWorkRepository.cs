@@ -14,28 +14,37 @@ public class UnitOfWorkRepository : IUnitOfWorkRepository
     public IProductRepository Products { get; }
     public IClientRepository Clients { get; }
     public IUserRepository Users { get; }
+    public IAuthTokenRepository AuthTokens { get; }
     public IOrderRepository Orders { get; }
     public IOrderItemRepository OrderItems { get; }
 
-    public UnitOfWorkRepository(ApplicationDbContext dbContext, ProductRepository productRepository)
+    public UnitOfWorkRepository(
+        ApplicationDbContext dbContext,
+        IProductRepository productRepository,
+        IClientRepository clientRepository,
+        IUserRepository userRepository,
+        IAuthTokenRepository authTokenRepository,
+        IOrderRepository orderRepository,
+        IOrderItemRepository orderItemRepository)
     {
         _dbContext = dbContext;
 
-        Users = new UserRepository(_dbContext);
-        Products = new ProductRepository(_dbContext);
-        Clients = new ClientRepository(_dbContext);
-        Orders = new OrderRepository(_dbContext);
-        OrderItems = new OrderItemRepository(_dbContext);
+        Products = productRepository;
+        Clients = clientRepository;
+        Users = userRepository;
+        AuthTokens = authTokenRepository;
+        Orders = orderRepository;
+        OrderItems = orderItemRepository;
     }
 
-    public async Task BeginTransactionAsync()
+    public async Task Begin()
     {
         if (_transaction != null) return;
 
         _transaction = await _dbContext.Database.BeginTransactionAsync();
     }
 
-    public async Task CommitTransactionAsync()
+    public async Task Commit()
     {
         try
         {
@@ -49,12 +58,12 @@ public class UnitOfWorkRepository : IUnitOfWorkRepository
         }
         catch
         {
-            await RollbackTransactionAsync();
+            await Rollback();
             throw;
         }
     }
 
-    public async Task RollbackTransactionAsync()
+    public async Task Rollback()
     {
         if (_transaction != null)
         {

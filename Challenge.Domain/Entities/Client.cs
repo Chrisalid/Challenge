@@ -5,7 +5,7 @@ public class Client : BaseEntity
     public long UserId { get; private set; }
     public string Name { get; private set; }
     public string Email { get; private set; }
-    public string? Phone { get; private set; }
+    public string Phone { get; private set; }
 
     public User User { get; set; }
     public ICollection<Order> Order { get; set; }
@@ -20,10 +20,15 @@ public class Client : BaseEntity
         client.SetPhone(model.Phone);
         client.SetEmail(model.Email);
 
+        client.SetCreatedBy(model.UpdateUserId);
+        client.SetCreated(DateTime.UtcNow);
+        client.SetUpdatedBy(model.UpdateUserId);
+        client.SetUpdated(DateTime.UtcNow);
+
         return client;
     }
 
-    private void SetUserId(long userId)
+    public void SetUserId(long userId)
     {
         if (userId >= 0)
             throw new ArgumentException("UserId must be greater than zero.", nameof(userId));
@@ -31,7 +36,7 @@ public class Client : BaseEntity
         UserId = userId;
     }
 
-    private void SetName(string name)
+    public void SetName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be null or empty.", nameof(name));
@@ -39,12 +44,12 @@ public class Client : BaseEntity
         Name = name;
     }
 
-    private void SetPhone(string? phone)
+    public void SetPhone(string? phone)
     {
         Phone = phone;
     }
 
-    private void SetEmail(string email)
+    public void SetEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email cannot be null or empty.", nameof(email));
@@ -57,6 +62,7 @@ public class Client : BaseEntity
         long UserId,
         string Name,
         string? Phone,
-        string Email
+        string Email,
+        long UpdateUserId
     );
 }

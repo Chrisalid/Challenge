@@ -5,12 +5,7 @@ using Challenge.Infrastructure.Repositories.Base;
 
 namespace Challenge.Infrastructure.Repositories;
 
-public class ProductRepository : BaseRepository<Product>, IProductRepository
+public class ProductRepository(ApplicationDbContext dbContext) : BaseRepository<Product>(dbContext), IProductRepository
 {
-    protected readonly ApplicationDbContext _dbContext;
-
-    public ProductRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    protected readonly ApplicationDbContext _dbContext = dbContext;
 }

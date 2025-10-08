@@ -21,10 +21,15 @@ public class Order : BaseEntity
         order.SetStatus(model.Status);
         order.SetTotalAmount(model.TotalAmount);
 
+        order.SetCreatedBy(model.UpdateUserId);
+        order.SetCreated(DateTime.UtcNow);
+        order.SetUpdatedBy(model.UpdateUserId);
+        order.SetUpdated(DateTime.UtcNow);
+
         return order;
     }
 
-    private void SetClientId(long clientId)
+    public void SetClientId(long clientId)
     {
         if (clientId >= 0)
             throw new ArgumentException("ClientId must be greater than zero.", nameof(clientId));
@@ -32,7 +37,7 @@ public class Order : BaseEntity
         ClientId = clientId;
     }
 
-    private void SetName(string name)
+    public void SetName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name cannot be null or empty.", nameof(name));
@@ -40,7 +45,7 @@ public class Order : BaseEntity
         Name = name;
     }
 
-    private void SetStatus(OrderStatus status)
+    public void SetStatus(OrderStatus status)
     {
         if (!Enum.IsDefined(status))
             throw new ArgumentException("Invalid Status.", nameof(status));
@@ -48,7 +53,7 @@ public class Order : BaseEntity
         Status = status;
     }
 
-    private void SetTotalAmount(decimal totalAmount)
+    public void SetTotalAmount(decimal totalAmount)
     {
         if (totalAmount <= 0.0m)
             throw new ArgumentException("TotalAmount must be greater than zero.", nameof(totalAmount));
@@ -61,6 +66,7 @@ public class Order : BaseEntity
         long ClientId,
         string Name,
         OrderStatus Status,
-        decimal TotalAmount
+        decimal TotalAmount,
+        long UpdateUserId
     );
 }

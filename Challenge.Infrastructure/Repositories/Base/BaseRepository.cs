@@ -17,11 +17,18 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public async Task CreateAsync(TEntity entity)
+    public async Task<long> CreateAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity).ConfigureAwait(false);
 
         await SaveChanges();
+
+        // Tenta a convenção "Id"
+        var entry = _dbContext.Entry(entity);
+        var idProp = entry.Properties.FirstOrDefault(p => string.Equals(p.Metadata.Name, "Id", StringComparison.OrdinalIgnoreCase));
+        if (idProp?.CurrentValue is long idLong) return idLong;
+
+        throw new InvalidOperationException("Não foi possível determinar o Id da entidade após SaveChanges.");
     }
 
     public async Task<TEntity?> GetById(long id)
@@ -43,7 +50,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task DeleteAsync(TEntity entity)
     {
-        _dbSet.Remove(entity);
+        _dbSet.Update(entity);
 
         await SaveChanges();
     }
